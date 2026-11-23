@@ -100,13 +100,19 @@ export class ControlsManager {
         case 'Enter':
         case ' ':
         case '5':
+          // Se estiver jogando, 5 não pausa para não atrapalhar quem usa teclado numérico; use Enter/Espaço/Pausa
+          if (this.callbacks.isPlaying && this.callbacks.isPlaying() && e.key === '5') {
+            return;
+          }
           this.callbacks.onAction();
           this.animateKey('key-5');
           this.animateKey('naviKey');
           break;
 
-        // Menu / Voltar / Esc / C
+        // Menu / Voltar / Esc / C / P (Pausa)
         case 'Escape':
+        case 'p':
+        case 'P':
         case 'c':
         case 'C':
         case 'Backspace':
@@ -114,16 +120,20 @@ export class ControlsManager {
           this.animateKey('keyClear');
           break;
 
-        // Alternar Modo de Jogo (*)
+        // Alternar Modo de Jogo (*) - Apenas fora da partida
         case '*':
-          this.callbacks.onToggleMode();
-          this.animateKey('key-star');
+          if (!this.callbacks.isPlaying || !this.callbacks.isPlaying()) {
+            this.callbacks.onToggleMode();
+            this.animateKey('key-star');
+          }
           break;
 
-        // Alternar Mudo (#)
+        // Alternar Mudo (#) - Apenas fora da partida
         case '#':
-          this.callbacks.onToggleMute();
-          this.animateKey('key-hash');
+          if (!this.callbacks.isPlaying || !this.callbacks.isPlaying()) {
+            this.callbacks.onToggleMute();
+            this.animateKey('key-hash');
+          }
           break;
 
         // Alternar Tela Cheia (F)
@@ -155,9 +165,19 @@ export class ControlsManager {
     const numButtons = document.querySelectorAll('.num-btn');
     numButtons.forEach(btn => {
       this.bindFastPress(btn, () => {
+        const isPlaying = this.callbacks.isPlaying && this.callbacks.isPlaying();
         const action = btn.dataset.action;
         const dir = btn.dataset.dir;
 
+        // Durante a partida, SÓ AS SETAS (data-dir: 2, 4, 6, 8) são aceitas!
+        if (isPlaying) {
+          if (!dir) return; // Ignora 1, 3, 5, 7, 9, *, 0, #
+          const [dx, dy] = dir.split(',').map(Number);
+          this.callbacks.onDirection({ x: dx, y: dy });
+          return;
+        }
+
+        // Fora da partida (Menus, Config, Game Over)
         if (dir) {
           const [dx, dy] = dir.split(',').map(Number);
           this.callbacks.onDirection({ x: dx, y: dy });

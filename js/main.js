@@ -75,6 +75,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     isMenuOpen: () => {
       return game.state !== GAME_STATES.PLAYING;
+    },
+
+    isPlaying: () => {
+      return game.state === GAME_STATES.PLAYING;
     }
   });
 

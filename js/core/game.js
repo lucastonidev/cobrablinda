@@ -263,6 +263,7 @@ export class Game {
     this.state = GAME_STATES.GAME_OVER;
     soundFx.playDie();
     this.checkHighScore();
+    this.updateKeypadState();
 
     if (this.ui.finalScore) this.ui.finalScore.textContent = this.score;
     if (this.ui.finalHighScore) this.ui.finalHighScore.textContent = this.highScores[this.currentMode];
@@ -281,11 +282,13 @@ export class Game {
       if (this.ui.pauseOverlay) this.ui.pauseOverlay.classList.add('hidden');
       this.lastFrameTime = performance.now();
     }
+    this.updateKeypadState();
   }
 
   showMenu() {
     this.state = GAME_STATES.MENU;
     this.hideAllOverlays();
+    this.updateKeypadState();
     if (this.ui.menuOverlay) {
       this.ui.menuOverlay.classList.remove('hidden');
       this.resetMenuSelection(this.ui.menuOverlay);
@@ -297,12 +300,27 @@ export class Game {
   showSettings() {
     this.state = GAME_STATES.SETTINGS;
     this.hideAllOverlays();
+    this.updateKeypadState();
     if (this.ui.settingsOverlay) {
       this.ui.settingsOverlay.classList.remove('hidden');
       this.resetMenuSelection(this.ui.settingsOverlay);
     }
     this.renderer.clear();
     this.renderer.drawWalls(this.currentMode);
+  }
+
+  updateKeypadState() {
+    const keypad = document.querySelector('.keypad-container');
+    const naviKey = document.getElementById('naviKey');
+    if (!keypad) return;
+
+    if (this.state === GAME_STATES.PLAYING) {
+      keypad.classList.add('playing-only-arrows');
+      if (naviKey) naviKey.textContent = 'PAUSA';
+    } else {
+      keypad.classList.remove('playing-only-arrows');
+      if (naviKey) naviKey.textContent = 'OK';
+    }
   }
 
   resetMenuSelection(overlay) {
@@ -422,5 +440,7 @@ export class Game {
         }
       }
     }
+
+    this.updateKeypadState();
   }
 }
