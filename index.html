@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Cobra Blinda - Jogo da Cobra Estilo Nokia 3310</title>
+  
+  <!-- Fonte Retrô Monospaçada -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <!-- Folha de Estilos Modular por Componentes -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Botão flutuante para sair da Tela Cheia e voltar ao Modo Celular -->
+  <button id="btnExitFullscreen" class="fs-exit-btn" title="Voltar ao Modo Celular">
+    📱 MODO CELULAR
+  </button>
+
+  <main class="app-container">
+    
+    <!-- ====================================================================
+         CELULAR RETRÔ NOKIA 3310 (Enquadrado em 100dvh)
+         ==================================================================== -->
+    <div class="nokia-phone">
+      <!-- Alto-falante superior de chamada -->
+      <div class="speaker-earpiece"></div>
+
+      <!-- Logotipo Nokia -->
+      <div class="nokia-logo">NOKIA</div>
+
+      <!-- Moldura Prateada da Tela -->
+      <div class="screen-bezel">
+        <div class="screen-container">
+          <!-- Reflexo de Vidro -->
+          <div class="screen-glare"></div>
+
+          <!-- Barra de Status Superior do LCD -->
+          <div class="lcd-status-bar">
+            <div class="signal-meter" title="Sinal de Rede">
+              <span class="signal-bar"></span>
+              <span class="signal-bar"></span>
+              <span class="signal-bar"></span>
+              <span class="signal-bar"></span>
+            </div>
+            
+            <div id="modeBadge" class="mode-badge">CLASSIC</div>
+            
+            <!-- Indicador de Vidas (Modo Melhorado) -->
+            <div id="livesDisplay" class="lives-display" title="Vidas">1♥</div>
+            
+            <div id="muteIndicator" class="mute-indicator">VOL</div>
+            
+            <div class="battery-meter" title="Nível de Bateria">
+              <div class="battery-body">
+                <div class="battery-level"></div>
+              </div>
+              <div class="battery-tip"></div>
+            </div>
+          </div>
+
+          <!-- Wrapper do Canvas e Menus em Camadas (Overlays) -->
+          <div class="canvas-wrapper">
+            <!-- Canvas onde os gráficos retrô são desenhados -->
+            <canvas id="gameCanvas"></canvas>
+
+            <!-- Textura de Matriz de Pixels do LCD Antigo -->
+            <div class="canvas-grid-overlay"></div>
+
+            <!-- Camada do Menu Principal -->
+            <div id="menuOverlay" class="screen-overlay">
+              <div class="overlay-dialog">
+                <h1 class="overlay-title">COBRA BLINDA</h1>
+                <p class="overlay-subtitle">Snake 3310 Edition</p>
+                
+                <div class="menu-options">
+                  <div id="btnStartGame" class="menu-item active">
+                    <span>1. JOGAR</span>
+                    <span>▶</span>
+                  </div>
+                  <div id="btnToggleMode" class="menu-item">
+                    <span>2. MODO</span>
+                    <span id="menuModeText">Clássico</span>
+                  </div>
+                  <div id="btnOpenSettings" class="menu-item">
+                    <span>3. CONFIG</span>
+                    <span>⚙</span>
+                  </div>
+                </div>
+
+                <div class="touch-hint-box">
+                  <span class="touch-hint-icon">👆</span>
+                  <span>CONTROLE TOUCH: Deslize o dedo na tela em qualquer direção!</span>
+                </div>
+
+                <div class="blink-prompt">Aperte 5 ou OK</div>
+              </div>
+            </div>
+
+            <!-- Camada de Configurações (Opção Tela Cheia e Swipe) -->
+            <div id="settingsOverlay" class="screen-overlay hidden">
+              <div class="overlay-dialog">
+                <h2 class="overlay-title">CONFIG</h2>
+                <p class="overlay-subtitle">Opções de Tela e Controles</p>
+                
+                <div class="menu-options">
+                  <div id="btnSettingFullscreen" class="menu-item active">
+                    <span>1. TELA CHEIA</span>
+                    <span id="settingFsStatus">DESL</span>
+                  </div>
+                  <div id="btnSettingSwipe" class="menu-item">
+                    <span>2. ARRASTAR (SWIPE)</span>
+                    <span id="settingSwipeStatus">LIGADO</span>
+                  </div>
+                  <div id="btnBackFromSettings" class="menu-item">
+                    <span>3. VOLTAR</span>
+                    <span>↩</span>
+                  </div>
+                </div>
+
+                <div class="blink-prompt">Aperte 5 ou C</div>
+              </div>
+            </div>
+
+            <!-- Camada de Game Over -->
+            <div id="gameOverOverlay" class="screen-overlay hidden">
+              <div class="overlay-dialog">
+                <h2 class="overlay-title">FIM DE JOGO</h2>
+                
+                <div class="game-over-stats">
+                  <div class="stat-row">
+                    <span>PONTOS:</span>
+                    <span id="finalScore">0</span>
+                  </div>
+                  <div class="stat-row">
+                    <span>RECORDE:</span>
+                    <span id="finalHighScore">0</span>
+                  </div>
+                </div>
+
+                <div class="menu-options">
+                  <div id="btnRestart" class="menu-item active">
+                    <span>1. DE NOVO</span>
+                    <span>↺</span>
+                  </div>
+                  <div id="btnBackMenu" class="menu-item">
+                    <span>2. MENU</span>
+                    <span>≡</span>
+                  </div>
+                </div>
+                <div class="blink-prompt">Aperte 5 p/ Reiniciar</div>
+              </div>
+            </div>
+
+            <!-- Camada de Pausa -->
+            <div id="pauseOverlay" class="screen-overlay hidden">
+              <div class="overlay-dialog">
+                <h2 class="overlay-title">PAUSADO</h2>
+                <p class="overlay-subtitle">Pressione 5 ou toque em Pausa para voltar</p>
+                <div class="touch-hint-box">
+                  <span class="touch-hint-icon">👆</span>
+                  <span>Deslize o dedo na tela para virar a cobra</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rodapé do LCD com Pontuação em Tempo Real -->
+          <div class="lcd-footer-bar">
+            <div>PTS: <span id="currentScore">0</span></div>
+            <div>REC: <span id="highScore">0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teclado Físico Nokia 3310 -->
+      <div class="keypad-container">
+        <!-- Teclas de Ação Superior -->
+        <div class="action-keys-row">
+          <button id="keyMenu" class="key-soft" title="Menu (C ou Esc)">Menu</button>
+          <button id="naviKey" class="navi-key" title="Ação / Ok (Enter ou Espaço)">OK</button>
+          <button id="keyClear" class="key-clear" title="Apagar / Voltar">C</button>
+        </div>
+
+        <!-- Grade Numérica 3x4 -->
+        <div class="numpad-grid">
+          <button id="key-1" class="num-btn">
+            <span class="primary-val">1</span>
+            <span class="secondary-val">. , ?</span>
+          </button>
+          <button id="key-2" class="num-btn dir-key" data-dir="0,-1" title="Cima (W / Seta Cima / 2)">
+            <span class="primary-val">2</span>
+            <span class="secondary-val">▲ ABC</span>
+          </button>
+          <button id="key-3" class="num-btn">
+            <span class="primary-val">3</span>
+            <span class="secondary-val">DEF</span>
+          </button>
+
+          <button id="key-4" class="num-btn dir-key" data-dir="-1,0" title="Esquerda (A / Seta Esquerda / 4)">
+            <span class="primary-val">4</span>
+            <span class="secondary-val">◄ GHI</span>
+          </button>
+          <button id="key-5" class="num-btn" data-action="action" title="Ação / Pausar (Enter / Espaço / 5)">
+            <span class="primary-val">5</span>
+            <span class="secondary-val">● JKL</span>
+          </button>
+          <button id="key-6" class="num-btn dir-key" data-dir="1,0" title="Direita (D / Seta Direita / 6)">
+            <span class="primary-val">6</span>
+            <span class="secondary-val">► MNO</span>
+          </button>
+
+          <button id="key-7" class="num-btn">
+            <span class="primary-val">7</span>
+            <span class="secondary-val">PQRS</span>
+          </button>
+          <button id="key-8" class="num-btn dir-key" data-dir="0,1" title="Baixo (S / Seta Baixo / 8)">
+            <span class="primary-val">8</span>
+            <span class="secondary-val">▼ TUV</span>
+          </button>
+          <button id="key-9" class="num-btn">
+            <span class="primary-val">9</span>
+            <span class="secondary-val">WXYZ</span>
+          </button>
+
+          <button id="key-star" class="num-btn" data-action="toggle-mode" title="Mudar Modo (*)">
+            <span class="primary-val">*</span>
+            <span class="secondary-val">MODO</span>
+          </button>
+          <button id="key-0" class="num-btn">
+            <span class="primary-val">0</span>
+            <span class="secondary-val">␣</span>
+          </button>
+          <button id="key-hash" class="num-btn" data-action="toggle-mute" title="Ligar/Desligar Som (#)">
+            <span class="primary-val">#</span>
+            <span class="secondary-val">SOM</span>
+          </button>
+        </div>
+
+        <!-- Barra Flutuante de Ações na Tela Cheia (Menu, Dica Touch & Pause) -->
+        <div class="fs-toolbar">
+          <button id="fsMenuBtn" class="fs-pill-btn" title="Menu Principal">≡ MENU</button>
+          <div class="fs-touch-badge">👆 ARRASTE O DEDO P/ VIRAR</div>
+          <button id="fsPauseBtn" class="fs-pill-btn" title="Pausar / Continuar">⏸ PAUSA</button>
+        </div>
+      </div>
+
+      <!-- Orifício do Microfone na base -->
+      <div class="mic-hole"></div>
+    </div>
+
+  </main>
+
+  <!-- Módulo JavaScript Principal -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

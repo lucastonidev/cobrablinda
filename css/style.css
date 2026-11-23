@@ -1,0 +1,18 @@
+/* ==========================================================================
+   MASTER STYLESHEET
+   Projeto: Cobra Blinda (Nokia 3310 Snake)
+   Módulos:
+   - base.css: Tokens de design, reset e layout principal
+   - components/phone.css: Carcaça e acabamentos físicos do Nokia 3310 (ajustada a 100dvh)
+   - components/screen.css: Tela LCD, status bar, canvas container e grid
+   - components/controls.css: Teclado físico, botões e efeito de clique
+   - components/overlays.css: Menus, Game Over, Pausa e Configurações
+   - components/fullscreen.css: Modo Tela Cheia sem carcaça
+   ========================================================================== */
+
+@import url('base.css');
+@import url('components/phone.css');
+@import url('components/screen.css');
+@import url('components/controls.css');
+@import url('components/overlays.css');
+@import url('components/fullscreen.css');

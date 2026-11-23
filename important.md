@@ -1,0 +1,4 @@
+- [x] tirar a parte de educational-panel, desnecessario
+- [x] dentro do celular mesmo, cria a opção de configuração, tela cheia, seria o modo que tira o design do celular e ela ocupa 100% da tela do site, modo celular fica do jeito que está, tenta fazer ela caber no limite de 100dvh, para ficar mais facil de alguém que tá no celular clicar nos botões
+- [x] no javascript a gente vai deixar ele em sistema de modular, com core, utils, components, para melhor manutenção.
+- [x] no modo melhorado, vai aparecer bombas, personagens que as vezes vai atirar e se a cobra passar ela morre, vai aparecer vidas extras, tudo no desing de nokia antigo, quero que se mude o css tmb, deixando compenents css, para melhor manutentção mesmo

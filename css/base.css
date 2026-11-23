@@ -1,0 +1,73 @@
+/* ==========================================================================
+   BASE & DESIGN TOKENS
+   Projeto: Cobra Blinda (Nokia 3310 Style Snake Game)
+   ========================================================================== */
+
+:root {
+  /* Paleta Nokia LCD clássica */
+  --lcd-bg: #97a858;            /* Fundo esverdeado característico do LCD monocromático */
+  --lcd-bg-lit: #a3b564;        /* Leve brilho de fundo */
+  --lcd-pixel: #162410;         /* "Pixels" escuros ativos */
+  --lcd-pixel-ghost: rgba(22, 36, 16, 0.08); /* Efeito fantasma de pixels inativos */
+  --lcd-border: #4d5730;
+
+  /* Cores da Carcaça do Celular (Nokia 3310 Navy Blue clássico) */
+  --phone-body: #233752;
+  --phone-body-light: #324c6e;
+  --phone-body-dark: #162438;
+  --phone-bezel: #adb6c4;
+  --phone-bezel-shadow: #7a8494;
+
+  /* Botões Físicos */
+  --btn-face: #dbe0e8;
+  --btn-face-highlight: #ffffff;
+  --btn-face-shadow: #9ba4b2;
+  --btn-text: #2a3749;
+  --btn-accent: #2e7bb0;
+
+  /* Fontes */
+  --font-pixel: 'VT323', 'Courier New', Courier, monospace;
+  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Configurações de Grid do Canvas */
+  --grid-size: 20;
+}
+
+/* Reset Básico */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at 50% 30%, #2b303c, #13151b);
+  font-family: var(--font-pixel);
+  color: #fff;
+  padding: clamp(8px, 1.8vh, 16px) clamp(10px, 2vw, 20px) clamp(18px, 3.5vh, 28px) clamp(10px, 2vw, 20px);
+}
+
+/* Container Principal */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  max-height: 100dvh;
+}

@@ -1,0 +1,159 @@
+/* ==========================================================================
+   COMPONENT: OVERLAYS (Menus do LCD: Início, Configurações, Game Over, Pausa)
+   ========================================================================== */
+
+/* Camada base de overlay sobre o Canvas dentro do LCD */
+.screen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(151, 168, 88, 0.94);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  z-index: 5;
+  color: var(--lcd-pixel);
+  text-align: center;
+  transition: opacity 0.15s ease;
+}
+
+.screen-overlay.hidden {
+  display: none !important;
+}
+
+/* Caixa de diálogo retrô que impede o menu de esticar */
+.overlay-dialog {
+  width: 100%;
+  max-width: 270px; /* Largura ideal compacta */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 14px;
+  background-color: var(--lcd-bg);
+  border: 2px solid var(--lcd-pixel);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 rgba(22, 36, 16, 0.4);
+}
+
+/* Títulos pixelados */
+.overlay-title {
+  font-family: var(--font-pixel);
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--lcd-pixel);
+  padding-bottom: 2px;
+  width: 100%;
+  max-width: 250px;
+  text-align: center;
+}
+
+.overlay-subtitle {
+  font-family: var(--font-pixel);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  opacity: 0.85;
+  text-align: center;
+}
+
+/* Menu de Opções interativo */
+.menu-options {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  max-width: 250px;
+  margin-bottom: 4px;
+}
+
+.menu-item {
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.08s ease;
+}
+
+.menu-item.active {
+  background-color: var(--lcd-pixel);
+  color: var(--lcd-bg);
+}
+
+.menu-item:hover:not(.active) {
+  border: 1px dashed var(--lcd-pixel);
+}
+
+/* Dica de destaque de controle por toque no visor */
+.touch-hint-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: rgba(22, 36, 16, 0.12);
+  border: 1px dashed var(--lcd-pixel);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+  line-height: 1.15;
+  font-weight: bold;
+  margin-top: 4px;
+  color: var(--lcd-pixel);
+  width: 100%;
+  max-width: 250px;
+  text-align: center;
+}
+
+.touch-hint-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* Dica de tecla piscante */
+.blink-prompt {
+  font-family: var(--font-pixel);
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 3px;
+  animation: lcdBlink 1s infinite steps(2, start);
+  text-align: center;
+}
+
+@keyframes lcdBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Placar de Game Over */
+.game-over-stats {
+  font-family: var(--font-pixel);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  margin: 4px 0;
+  width: 100%;
+  max-width: 250px;
+  border-top: 1px dashed var(--lcd-pixel);
+  border-bottom: 1px dashed var(--lcd-pixel);
+  padding: 3px 0;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+}

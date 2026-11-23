@@ -1,0 +1,187 @@
+/* ==========================================================================
+   COMPONENT: SCREEN (Tela Monocromática LCD Retrô)
+   ========================================================================== */
+
+.screen-container {
+  position: relative;
+  width: 100%;
+  background-color: var(--lcd-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 3px 6px rgba(0, 0, 0, 0.6),
+    inset 0 0 12px rgba(22, 36, 16, 0.4);
+  border: 3px solid #202b18;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Reflexo de vidro na tela */
+.screen-glare {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 10;
+  border-radius: 7px 7px 0 0;
+}
+
+/* Barra de Status Superior (Sinal, Modo, Vidas/Bateria) */
+.lcd-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 8px;
+  background-color: rgba(22, 36, 16, 0.05);
+  border-bottom: 1px dashed rgba(22, 36, 16, 0.25);
+  font-family: var(--font-pixel);
+  font-size: 0.95rem;
+  line-height: 1;
+  font-weight: bold;
+  color: var(--lcd-pixel);
+  letter-spacing: 0.5px;
+  height: clamp(24px, 3.2vh, 28px);
+}
+
+/* Indicador de Sinal */
+.signal-meter {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 9px;
+}
+
+.signal-bar {
+  width: 2px;
+  background-color: var(--lcd-pixel);
+  border-radius: 0.5px;
+}
+.signal-bar:nth-child(1) { height: 3px; }
+.signal-bar:nth-child(2) { height: 5px; }
+.signal-bar:nth-child(3) { height: 7px; }
+.signal-bar:nth-child(4) { height: 9px; }
+
+/* Indicador de Vidas Extras (Grande e com alto destaque) */
+.lives-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-family: var(--font-pixel);
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--lcd-pixel);
+  letter-spacing: 2px;
+  background: rgba(22, 36, 16, 0.08);
+  padding: 1px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(22, 36, 16, 0.25);
+  line-height: 1;
+}
+
+.lives-display .heart-symbol {
+  font-size: 1.35rem;
+  display: inline-block;
+  transform: translateY(-1px);
+  color: var(--lcd-pixel);
+  text-shadow: 0 0 1px rgba(22, 36, 16, 0.5);
+}
+
+.heart-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* Indicador de Modo de Jogo */
+.mode-badge {
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+/* Indicador de Bateria */
+.battery-meter {
+  display: flex;
+  align-items: center;
+}
+
+.battery-body {
+  width: 13px;
+  height: 7px;
+  border: 1.5px solid var(--lcd-pixel);
+  border-radius: 1.5px;
+  padding: 1px;
+  display: flex;
+}
+
+.battery-level {
+  width: 100%;
+  height: 100%;
+  background-color: var(--lcd-pixel);
+}
+
+.battery-tip {
+  width: 2px;
+  height: 3px;
+  background-color: var(--lcd-pixel);
+  border-radius: 0 1px 1px 0;
+}
+
+/* Container do Canvas onde o jogo é renderizado */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--lcd-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Grade sutil que imita os pixels físicos do LCD */
+.canvas-grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-size: 4px 4px;
+  background-image: 
+    linear-gradient(to right, rgba(22, 36, 16, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22, 36, 16, 0.04) 1px, transparent 1px);
+  z-index: 2;
+}
+
+/* Elemento Canvas Real */
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Rodapé do LCD com Placar e Recorde */
+.lcd-footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 6px;
+  background-color: rgba(22, 36, 16, 0.05);
+  border-top: 1px dashed rgba(22, 36, 16, 0.25);
+  font-family: var(--font-pixel);
+  font-size: 0.95rem;
+  line-height: 1;
+  font-weight: bold;
+  color: var(--lcd-pixel);
+  height: 20px;
+}
